@@ -85,7 +85,7 @@ One prompt asks what you're working with and how thorough to be. Then:
 4. **Model-Check** — TLC explores every reachable state, reports violations with exact traces
 5. **Implement or fix** — maps findings to code changes and test cases
 
-Full details in [SKILL.md](SKILL.md).
+Full details in [SKILL.md](skills/tla/SKILL.md).
 
 ## What's included
 
