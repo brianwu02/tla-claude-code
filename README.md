@@ -1,4 +1,4 @@
-# general-tla
+# tla-claude-code
 
 A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill that leverages [TLA+](https://lamport.azurewebsites.net/tla/tla.html), Leslie Lamport's formal verification framework, to find concurrency bugs by checking every possible ordering of events. Works from design docs or existing code.
 
@@ -19,12 +19,12 @@ Fix: guard on useRef, not useState. Refs update synchronously.
 ## Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/general-tla.git /tmp/general-tla
+git clone https://github.com/brianwu02/tla-claude-code.git /tmp/tla-claude-code
 cd /path/to/your-project
-bash /tmp/general-tla/setup.sh
+bash /tmp/tla-claude-code/setup.sh
 ```
 
-Requires Java 11+.
+Requires Java 11+. The setup script copies skill files into your project and downloads TLA+ tools if missing.
 
 ## More examples
 
@@ -79,6 +79,15 @@ One prompt asks what you're working with and how thorough to be. Then:
 5. **Implement or fix** — maps findings to code changes and test cases
 
 Full details in [SKILL.md](SKILL.md).
+
+## What's included
+
+- **Before/after code examples** — see the buggy version and the fix side-by-side (Python, TypeScript, React)
+- **Works on frontend and backend** — double-clicks, stale caches, crashed workers, booking conflicts, multi-tab bugs
+- **UX flow analysis** — finds unnecessary screens in your checkout/onboarding and tells you which ones to cut
+- **Explains findings in plain English** — "users could be charged twice" not "liveness violation on temporal property"
+- **Estimates runtime before checking** — tells you "~15 seconds on your machine" before it starts, not after
+- **One prompt to configure** — pick Quick (seconds), Standard (minutes), or Thorough (deep analysis) and it handles the rest
 
 ## Learn more
 
