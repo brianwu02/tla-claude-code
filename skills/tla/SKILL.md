@@ -195,11 +195,23 @@ The goal is the same as 1A — produce a modeling brief — but the source mater
 
 For non-trivial codebases, spawn three agents in parallel to scan different aspects of the code simultaneously. Each agent returns structured findings that merge into the modeling brief.
 
-**Agent 1 — Shared state scan**: Search the codebase for mutable state accessed by multiple actors. Grep for: `SELECT FOR UPDATE`, `UPDATE ... SET status`, `SETNX`, `useRef`, `useState`, shared variables, `global`, `threading.Lock`, `asyncio.Lock`, Redis `SET`/`GET` patterns, pub/sub channels.
+**All agents — detect language first**: Before grepping, detect the project's languages from file extensions. Only grep for patterns matching detected languages. SQL patterns always apply.
 
-**Agent 2 — Concurrency primitive scan**: Search for synchronization mechanisms and async patterns. Grep for: `transaction`, `BEGIN/COMMIT`, `FOR UPDATE`, `atomic`, `mutex`, `semaphore`, `BroadcastChannel`, `SharedWorker`, `Promise.all`, `asyncio.gather`, `queue`, `worker`, `pool`, retry/backoff logic.
+```bash
+find . -type f \( -name "*.py" -o -name "*.ts" -o -name "*.tsx" -o -name "*.go" -o -name "*.rs" -o -name "*.java" -o -name "*.cs" -o -name "*.rb" \) -not -path "*/node_modules/*" | sed 's/.*\.//' | sort -u
+```
 
-**Agent 3 — Error/crash path scan**: Search for error handling around shared state. Grep for: `try/except` and `try/catch` blocks near DB writes or state mutations, `finally` blocks, cleanup handlers, `on_shutdown`, `atexit`, dead letter queues, orphan recovery crons.
+**Grep patterns by language:**
+
+| Language | Agent 1: Shared state | Agent 2: Concurrency primitives | Agent 3: Error/crash paths |
+|----------|----------------------|-------------------------------|---------------------------|
+| Python | `global`, `threading.Lock`, `asyncio.Lock` | `asyncio.gather`, `queue`, `Pool` | `try/except`, `atexit`, `finally` |
+| TS/JS | `useState`, `useRef`, `SharedWorker` | `Promise.all`, `BroadcastChannel` | `try/catch`, `finally` |
+| Go | `sync.Map`, `chan` | `sync.Mutex`, `sync.WaitGroup`, `go func` | `recover()`, `defer` |
+| Java | `ConcurrentHashMap`, `AtomicReference` | `synchronized`, `ReentrantLock`, `ExecutorService` | `try/catch`, `finally`, `@PreDestroy` |
+| Rust | `Arc<Mutex>`, `static mut` | `tokio::join`, `mpsc::channel`, `RwLock` | `Result<`, `Drop`, `?` near mutations |
+| C# | `ConcurrentDictionary`, `Interlocked` | `Task.WhenAll`, `lock`, `SemaphoreSlim` | `try/catch`, `finally`, `Dispose` |
+| SQL (always) | `UPDATE`, `INSERT`, `SELECT FOR UPDATE` | `BEGIN`, `COMMIT`, `ROLLBACK` | `SAVEPOINT` |
 
 Each agent returns a list of: `{file, line, pattern_type, description}`. Merge the results and use them as input to 1B.1–1B.4 below.
 
