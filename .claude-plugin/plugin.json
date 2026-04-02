@@ -1,0 +1,6 @@
+{
+  "name": "tla-claude-code",
+  "description": "TLA+ formal verification skill for Claude Code — finds concurrency bugs, race conditions, and UX flow issues",
+  "version": "1.0.0",
+  "author": { "name": "brianwu02" }
+}

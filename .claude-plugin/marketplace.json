@@ -1,0 +1,11 @@
+{
+  "name": "tla-claude-code",
+  "owner": { "name": "brianwu02" },
+  "plugins": [
+    {
+      "name": "tla-claude-code",
+      "source": "./",
+      "description": "TLA+ formal verification for concurrency bugs, race conditions, and UX flow issues"
+    }
+  ]
+}

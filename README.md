@@ -18,13 +18,20 @@ Fix: guard on useRef, not useState. Refs update synchronously.
 
 ## Install
 
+**As a plugin** (recommended):
+```
+/plugin marketplace add brianwu02/tla-claude-code
+/plugin install tla-claude-code@tla-claude-code
+```
+
+**Or manually:**
 ```bash
 git clone https://github.com/brianwu02/tla-claude-code.git /tmp/tla-claude-code
 cd /path/to/your-project
 bash /tmp/tla-claude-code/setup.sh
 ```
 
-Requires Java 11+. The setup script copies skill files into your project and downloads TLA+ tools if missing.
+Requires Java 11+.
 
 ## More examples
 

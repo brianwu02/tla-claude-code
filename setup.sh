@@ -1,17 +1,17 @@
 #!/bin/bash
-# Install general-tla skill and prerequisites
+# Install tla-claude-code skill and prerequisites
 set -e
 
-SKILL_DIR="${1:-.claude/skills/general-tla}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILL_DIR="${1:-.claude/skills/tla}"
 TLA_DIR="$HOME/tla"
 TLA_JAR="$TLA_DIR/tla2tools.jar"
 
-echo "Installing general-tla skill..."
+echo "Installing tla-claude-code skill..."
 
-# Copy skill files
-mkdir -p "$SKILL_DIR/references"
-cp SKILL.md "$SKILL_DIR/"
-cp references/*.md "$SKILL_DIR/references/"
+# Copy skill files from plugin structure
+mkdir -p "$SKILL_DIR"
+cp -r "$SCRIPT_DIR/skills/tla/"* "$SKILL_DIR/"
 
 echo "Skill installed to $SKILL_DIR"
 
@@ -37,3 +37,7 @@ fi
 
 echo ""
 echo "Done. Run 'java -jar ~/tla/tla2tools.jar' to verify TLC works."
+echo ""
+echo "Or install as a plugin:"
+echo "  /plugin marketplace add brianwu02/tla-claude-code"
+echo "  /plugin install tla-claude-code@tla-claude-code"
