@@ -195,18 +195,9 @@ Example: orphan recovery needs all workers to be idle. Workers are constantly pi
 
 Missing fairness on a single action, or the wrong type (WF vs SF), causes false liveness violations that are hard to diagnose. Check fairness assignments whenever you see unexpected liveness failures.
 
-#### Symmetry reduction ratios
+#### Symmetry reduction
 
-You can reduce model size more aggressively than you might think. These ratios come from production specs where the reduced model still caught every bug the larger model would have:
-
-| Real system | Model | Reduction | Why it works |
-|-------------|-------|-----------|-------------|
-| 65 VPN containers | 2 nodes | ~30:1 | Model equivalence classes (Cogent vs non-Cogent), not individual containers |
-| 7,000+ campgrounds | 3 parks | ~2300:1 | Race conditions between parks, not park identity, is what matters |
-| N workers (unbounded) | 2 workers | N:2 | Two workers is sufficient to find all interleaving bugs |
-| Unbounded queue | queue ≤ 6 | ∞:6 | Bounded queue in model; real bugs happen at small sizes too |
-
-**Principle**: Model **equivalence classes**, not instances. If 65 containers differ only by their pool assignment (Cogent vs PIA), two nodes with a `NodeType` function captures the same concurrency properties.
+Start with the smallest model that can have a conflict: 2 actors, 3 items, queues capped at 6. Scale up only if TLC passes and you suspect the small model is hiding bugs.
 
 #### Three-valued logic
 
