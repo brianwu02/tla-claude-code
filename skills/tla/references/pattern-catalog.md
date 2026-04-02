@@ -69,7 +69,7 @@ Direct mapping from natural-language design patterns to TLA+ constructs. Use thi
 | Design Doc Pattern | TLA+ Construct | Example |
 |-------------------|----------------|---------|
 | "Only one X can..." | `Cardinality({x \in S : state[x] = "active"}) <= 1` | Only one worker processes a given job |
-| "At most N concurrent" | `Cardinality({w : state[w] = "busy"}) <= N` | Max 8 concurrent scraper connections |
+| "At most N concurrent" | `Cardinality({w : state[w] = "busy"}) <= N` | Max 8 concurrent connections |
 | "Last-writer-wins" | Version counter on server; reject if `clientVersion < serverVersion` | Optimistic locking on database rows |
 
 ### Liveness (good things that must eventually happen)
@@ -139,7 +139,7 @@ Fairness assumptions determine what TLC assumes about scheduling. Getting these 
 
 ### Lessons from Production Specs
 
-These lessons come from applying TLA+ to real production systems — a scraper fleet with 65 VPN containers, a multi-layer cache serving 7,000+ parks, and a distributed job queue. Each lesson was learned the hard way (false violations, state explosions, or missed bugs).
+These lessons come from applying TLA+ to real production systems — worker fleets, multi-layer caches, and distributed job queues. Each was learned the hard way (false violations, state explosions, or missed bugs).
 
 #### Cap accumulators
 
