@@ -1,5 +1,5 @@
 ---
-name: general-tla
+name: tla
 description: TLA+ formal verification — verify concurrency, race conditions, crash recovery, optimistic UI, and UX flows. Works from design docs or existing code.
 disable-model-invocation: true
 user-invokable: true
